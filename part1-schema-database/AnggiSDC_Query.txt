@@ -1,0 +1,190 @@
+-- Create Table User
+create table if not exists users (
+	id serial primary key,
+	username varchar(15),
+	password varchar(15),
+	email varchar(100),
+	phone varchar(20),
+	created_at timestamp not null,
+	updated_at timestamp not null,
+	status int,
+	gender varchar(1)
+);
+
+-- Create Table Product
+create table if not exists product (
+	id_product serial primary key,
+	id_product_type int references product_type(id_product_type),
+	code_product varchar(20),
+	name varchar(100),
+	price int,
+	qty int,
+	status varchar(1),
+	created_by varchar(20),
+	created_at timestamp,
+	updated_at timestamp
+);
+
+-- Create Table Product Type
+create table if not exists product_type (
+	id_product_type serial primary key,
+	name varchar(50),
+	status varchar(1),
+	created_by varchar(20),
+	created_at timestamp,
+	updated_at timestamp	
+);
+
+-- Create Table Product Description
+create table if not exists product_description (
+	id_product_description serial primary key,
+	id_product int references product(id_product),
+	description_text text,
+	status varchar(1),
+	created_by varchar(20),
+	created_at timestamp,
+	updated_at timestamp	
+);
+
+-- Create Table Payment Method
+create table if not exists payment_method (
+	id_payment_method serial primary key,
+	name varchar(100),
+	status varchar(1),
+	created_by varchar(20),
+	created_at timestamp,
+	updated_at timestamp	
+);
+
+-- Create Table Transaction
+create table if not exists transaction (
+	id_transaction serial primary key,
+	id_users int references users(id),
+	code varchar(25),
+	total_amount int,
+	total_qty int,
+	status varchar(1),
+	created_by varchar(20),
+	created_at timestamp,
+	updated_at timestamp
+);
+
+-- Create Table Transaction Detail
+create table if not exists transaction_detail (
+	id_transaction_detail serial primary key,
+	id_transaction int references transaction(id_transaction),
+	id_product int references product(id_product),
+	amount int,
+	qty int,
+	status varchar(1),
+	created_by varchar(20),
+	created_at timestamp,
+	updated_at timestamp
+);
+
+-- Create Table Kurir
+create table if not exists kurir (
+	id serial primary key,
+	name varchar(50),
+	created_at timestamp,
+	updated_at timestamp
+);
+
+-- Alter & Drop Table
+alter table kurir add column ongkos_dasar int;
+alter table kurir rename to shipping;
+drop table shipping;
+
+
+-- Create Table Description
+create table if not exists description(
+	id_description serial primary key,
+	id_payment_method int references payment_method(id_payment_method),
+	description_text text,
+	status int,
+	created_at timestamp,
+	updated_at timestamp 
+);
+
+-- Create Table Alamat
+create table if not exists alamat(
+	id_alamat serial primary key,
+	id_users int,
+	alamat_text text,
+	status int,
+	created_at timestamp,
+	updated_at timestamp
+);
+
+-- Create Table Many to Many User and Payment Method : user_payment_method_detail
+create table if not exists users_payment_method_detail(
+	id SERIAL primary key,
+	id_users int,
+	id_payment_method int,
+	constraint fk_users FOREIGN KEY(id_users) REFERENCES users(id),
+	constraint fk_payment_method FOREIGN KEY(id_payment_method) REFERENCES payment_method(id_payment_method)
+);
+
+
+-- Insert 3 To Table Product Type
+insert into product_type (name,status,created_by,created_at) values
+('Baju Pria', 1, 'Admin', now()),
+('Celana Pria', 1, 'Admin', now()),
+('Baju Wanita', 1, 'Admin', now());
+
+-- Insert To Table Product
+insert into product (id_product_type, code_product, name, price, qty, status, created_by, created_at) values
+(3, 'CP006', 'Polo', 120000, 28,1, 'Admin', now()),
+(3, 'CP007', 'Colorbox', 250000, 24,1, 'Admin', now()),
+(3, 'CP008', 'Ramayana', 450000, 10,1, 'Admin', now());
+
+-- Insert Product Description to Product
+insert into product_description (id_product, description_text, status, created_by, created_at) values
+(1, 'Baju Pria Kekinian', 1, 'Admin', now()),
+(2, 'Baju Wanita Stylist', 1, 'Admin', now()),
+(3, 'Celana levis Dengan Model Baru', 1, 'Admin', now()),
+(4, 'Pakaian Dengan Gaya Kebarat Baratan', 1, 'Admin', now()),
+(5, 'Tampil PD dengan Product anak bangsa', 1, 'Admin', now()),
+(6, 'Penampilan Dengan Gaya formal', 1, 'Admin', now()),
+(7, 'Pakaian Wanita Dengan model Penuh Warna', 1, 'Admin', now()),
+(8, 'Tampil Gaya Dengan Harga Minimalis', 1, 'Admin', now());
+
+-- Insert 3 Payment Method
+insert into payment_method (name, status, created_at, created_by) values
+('Cash', 1, now(), 'Admin'),
+('QRIS', 1, now(), 'Admin'),
+('Debit', 1, now(), 'Admin');
+
+-- Insert 5 Users
+insert into users (username, password, email, phone, status, created_at) values
+('admin', 'admin123', 'admin@alta.com', '0812312412', 1, now(), 'M'),
+('joko', 'admin1234', 'admin@alta.com', '0815314412', 1, now(), 'M'),
+('raema', 'admin125', 'admin@alta.com', '0812312442', 1, now(), 'F'),
+('elang', 'admin126', 'admin@alta.com', '0832312422', 1, now(), 'M'),
+('taka', 'admin127', 'admin@alta.com', '0810912412', 1, now(), 'M');
+
+-- Insert 3 To Table Transaction
+insert into transaction (id_users, code, total_amount, total_qty, created_at, created_by, status) values
+(1, 'TR001', 620000, 3, now(), 'Admin', 1),
+(2, 'TR004', 1070000, 3, now(), 'Admin', 1),
+(3, 'TR009', 820000, 3, now(), 'Admin', 1);
+
+-- Insert 3 Product To Transaction Detail
+insert into transaction_detail (id_transaction, id_product, amount, qty, status, created_by, created_at) values
+(1, 1, 120000, 1, 1, 'Admin', now()),
+(1, 2, 200000, 1, 1, 'Admin', now()),
+(1, 3, 300000, 1, 1, 'Admin', now()),
+(2, 4, 250000, 1, 1, 'Admin', now()),
+(2, 5, 700000, 1, 1, 'Admin', now()),
+(2, 6, 120000, 1, 1, 'Admin', now()),
+(3, 6, 120000, 1, 1, 'Admin', now()),
+(3, 7, 250000, 1, 1, 'Admin', now()),
+(3, 8, 450000, 1, 1, 'Admin', now());
+
+-- Select User Gender M
+select username from users where gender = 'M';
+
+-- Select Product Id = 3
+select * from product where id_product = '3';
+
+-- Select Product with Range
