@@ -187,4 +187,78 @@ select username from users where gender = 'M';
 -- Select Product Id = 3
 select * from product where id_product = '3';
 
--- Select Product with Range
+-- Select Product with Range & contains username "a"
+select *from users where DATE(created_at) >= NOW() - INTERVAL '7 days' and username like '%a%';
+
+-- Select count users with gender F
+select count(*) as Total from users where gender = 'F';
+
+-- Select and ordering with alphabetic username
+select *from users order by username asc;
+
+-- Select Transaction
+select *from transaction_detail where id_product = 3 limit 5;
+
+-- Update product name
+update product set name = 'product dummy' where id_product = 1;
+
+-- Update product qty on transaction detail
+update transaction_detail set qty = 3, updated_at = now() where id_product = 1;
+
+-- Update amount on transaction detail
+update transaction_detail set amount = (amount * qty) where id_product = 1;
+
+-- Update total amount on transaction
+update transaction set total_qty = 3, total_amount = (total_amount * 3) where id_transaction = 1;
+
+-- Alter table cascade before delete
+ALTER TABLE public.transaction_detail DROP CONSTRAINT transaction_detail_id_product_fkey;
+ALTER TABLE public.transaction_detail ADD CONSTRAINT transaction_detail_id_product_fkey FOREIGN KEY (id_product) REFERENCES public.product(id_product) ON DELETE CASCADE;
+
+ALTER TABLE public.product_description DROP CONSTRAINT product_description_id_product_fkey;
+ALTER TABLE public.product_description ADD CONSTRAINT product_description_id_product_fkey FOREIGN KEY (id_product) REFERENCES public.product(id_product) ON DELETE CASCADE;
+
+-- Delete product
+delete from product where id_product = 1;
+delete from product where id_product_type = 1;
+
+-- Union transaction
+select a.id_transaction, a.id_users, a.code, a.total_qty, a.total_amount from transaction a where a.id_users = 1
+union
+select b.id_transaction, b.id_users, b.code, b.total_qty, b.total_amount from transaction b where b.id_users = 2;
+
+-- Show total price
+select total_amount from transaction where id_users = 1;
+
+-- Show total from table transaction detail
+select sum(a.amount) as Total from transaction_detail a inner join product b on a.id_product = b.id_product where b.id_product_type = 2;
+
+-- Show all table product and product type
+select a.*, b.* from product a inner join product_type b on a.id_product_type = b.id_product_type;
+
+-- Show all table transaction, product, users
+select *from transaction_detail a inner join transaction b on a.id_transaction = b.id_transaction inner join product c on c.id_product = a.id_product inner join users d on d.id = b.id_users;
+
+-- Show all product not in transaction detail
+select *from product where id_product not IN(select id_product from transaction_detail);
+
+-- Create Tridger and Function for updated_at
+CREATE OR REPLACE FUNCTION product_update_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_updated_at
+BEFORE UPDATE ON product
+FOR EACH ROW
+EXECUTE FUNCTION product_update_updated_at();
+
+-- Create view product and product_type
+CREATE OR REPLACE VIEW public.product_with_type
+AS select a.*, b.name as type_name from product a inner join product_type b on a.id_product_type = b.id_product_type;
+
+-- Show view product_with_type
+select *from product_with_type;
