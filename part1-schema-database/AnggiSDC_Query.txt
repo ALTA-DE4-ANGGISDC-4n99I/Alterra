@@ -1,4 +1,4 @@
--- Create Table User
+-- 1. Create Table User
 create table if not exists users (
 	id serial primary key,
 	username varchar(15),
@@ -11,7 +11,7 @@ create table if not exists users (
 	gender varchar(1)
 );
 
--- Create Table Product
+-- 2. Create Table Product
 create table if not exists product (
 	id_product serial primary key,
 	id_product_type int references product_type(id_product_type),
@@ -25,7 +25,7 @@ create table if not exists product (
 	updated_at timestamp
 );
 
--- Create Table Product Type
+-- 3. Create Table Product Type
 create table if not exists product_type (
 	id_product_type serial primary key,
 	name varchar(50),
@@ -35,7 +35,7 @@ create table if not exists product_type (
 	updated_at timestamp	
 );
 
--- Create Table Product Description
+-- 4. Create Table Product Description
 create table if not exists product_description (
 	id_product_description serial primary key,
 	id_product int references product(id_product),
@@ -46,7 +46,7 @@ create table if not exists product_description (
 	updated_at timestamp	
 );
 
--- Create Table Payment Method
+-- 5. Create Table Payment Method
 create table if not exists payment_method (
 	id_payment_method serial primary key,
 	name varchar(100),
@@ -56,7 +56,7 @@ create table if not exists payment_method (
 	updated_at timestamp	
 );
 
--- Create Table Transaction
+-- 6. Create Table Transaction
 create table if not exists transaction (
 	id_transaction serial primary key,
 	id_users int references users(id),
@@ -69,7 +69,7 @@ create table if not exists transaction (
 	updated_at timestamp
 );
 
--- Create Table Transaction Detail
+-- 7. Create Table Transaction Detail
 create table if not exists transaction_detail (
 	id_transaction_detail serial primary key,
 	id_transaction int references transaction(id_transaction),
@@ -82,7 +82,7 @@ create table if not exists transaction_detail (
 	updated_at timestamp
 );
 
--- Create Table Kurir
+-- 8. Create Table Kurir
 create table if not exists kurir (
 	id serial primary key,
 	name varchar(50),
@@ -90,13 +90,13 @@ create table if not exists kurir (
 	updated_at timestamp
 );
 
--- Alter & Drop Table
+-- 9. Alter & Drop Table
 alter table kurir add column ongkos_dasar int;
 alter table kurir rename to shipping;
 drop table shipping;
 
 
--- Create Table Description
+-- 10. Create Table Description
 create table if not exists description(
 	id_description serial primary key,
 	id_payment_method int references payment_method(id_payment_method),
@@ -106,7 +106,7 @@ create table if not exists description(
 	updated_at timestamp 
 );
 
--- Create Table Alamat
+-- 11. Create Table Alamat
 create table if not exists alamat(
 	id_alamat serial primary key,
 	id_users int,
@@ -116,7 +116,7 @@ create table if not exists alamat(
 	updated_at timestamp
 );
 
--- Create Table Many to Many User and Payment Method : user_payment_method_detail
+-- 12. Create Table Many to Many User and Payment Method : user_payment_method_detail
 create table if not exists users_payment_method_detail(
 	id SERIAL primary key,
 	id_users int,
@@ -126,19 +126,19 @@ create table if not exists users_payment_method_detail(
 );
 
 
--- Insert 3 To Table Product Type
+-- 13. Insert 3 To Table Product Type
 insert into product_type (name,status,created_by,created_at) values
 ('Baju Pria', 1, 'Admin', now()),
 ('Celana Pria', 1, 'Admin', now()),
 ('Baju Wanita', 1, 'Admin', now());
 
--- Insert To Table Product
+-- 14. Insert To Table Product
 insert into product (id_product_type, code_product, name, price, qty, status, created_by, created_at) values
 (3, 'CP006', 'Polo', 120000, 28,1, 'Admin', now()),
 (3, 'CP007', 'Colorbox', 250000, 24,1, 'Admin', now()),
 (3, 'CP008', 'Ramayana', 450000, 10,1, 'Admin', now());
 
--- Insert Product Description to Product
+-- 15. Insert Product Description to Product
 insert into product_description (id_product, description_text, status, created_by, created_at) values
 (1, 'Baju Pria Kekinian', 1, 'Admin', now()),
 (2, 'Baju Wanita Stylist', 1, 'Admin', now()),
@@ -149,13 +149,13 @@ insert into product_description (id_product, description_text, status, created_b
 (7, 'Pakaian Wanita Dengan model Penuh Warna', 1, 'Admin', now()),
 (8, 'Tampil Gaya Dengan Harga Minimalis', 1, 'Admin', now());
 
--- Insert 3 Payment Method
+-- 16. Insert 3 Payment Method
 insert into payment_method (name, status, created_at, created_by) values
 ('Cash', 1, now(), 'Admin'),
 ('QRIS', 1, now(), 'Admin'),
 ('Debit', 1, now(), 'Admin');
 
--- Insert 5 Users
+-- 17. Insert 5 Users
 insert into users (username, password, email, phone, status, created_at) values
 ('admin', 'admin123', 'admin@alta.com', '0812312412', 1, now(), 'M'),
 ('joko', 'admin1234', 'admin@alta.com', '0815314412', 1, now(), 'M'),
@@ -163,13 +163,13 @@ insert into users (username, password, email, phone, status, created_at) values
 ('elang', 'admin126', 'admin@alta.com', '0832312422', 1, now(), 'M'),
 ('taka', 'admin127', 'admin@alta.com', '0810912412', 1, now(), 'M');
 
--- Insert 3 To Table Transaction
+-- 18. Insert 3 To Table Transaction
 insert into transaction (id_users, code, total_amount, total_qty, created_at, created_by, status) values
 (1, 'TR001', 620000, 3, now(), 'Admin', 1),
 (2, 'TR004', 1070000, 3, now(), 'Admin', 1),
 (3, 'TR009', 820000, 3, now(), 'Admin', 1);
 
--- Insert 3 Product To Transaction Detail
+-- 19. Insert 3 Product To Transaction Detail
 insert into transaction_detail (id_transaction, id_product, amount, qty, status, created_by, created_at) values
 (1, 1, 120000, 1, 1, 'Admin', now()),
 (1, 2, 200000, 1, 1, 'Admin', now()),
@@ -181,68 +181,68 @@ insert into transaction_detail (id_transaction, id_product, amount, qty, status,
 (3, 7, 250000, 1, 1, 'Admin', now()),
 (3, 8, 450000, 1, 1, 'Admin', now());
 
--- Select User Gender M
+-- 20. Select User Gender M
 select username from users where gender = 'M';
 
--- Select Product Id = 3
+-- 21. Select Product Id = 3
 select * from product where id_product = '3';
 
--- Select Product with Range & contains username "a"
+-- 22. Select Product with Range & contains username "a"
 select *from users where DATE(created_at) >= NOW() - INTERVAL '7 days' and username like '%a%';
 
--- Select count users with gender F
+-- 23. Select count users with gender F
 select count(*) as Total from users where gender = 'F';
 
--- Select and ordering with alphabetic username
+-- 24. Select and ordering with alphabetic username
 select *from users order by username asc;
 
--- Select Transaction
+-- 25. Select Transaction
 select *from transaction_detail where id_product = 3 limit 5;
 
--- Update product name
+-- 26. Update product name
 update product set name = 'product dummy' where id_product = 1;
 
--- Update product qty on transaction detail
+-- 27. Update product qty on transaction detail
 update transaction_detail set qty = 3, updated_at = now() where id_product = 1;
 
--- Update amount on transaction detail
+-- 28. Update amount on transaction detail
 update transaction_detail set amount = (amount * qty) where id_product = 1;
 
--- Update total amount on transaction
+-- 29. Update total amount on transaction
 update transaction set total_qty = 3, total_amount = (total_amount * 3) where id_transaction = 1;
 
--- Alter table cascade before delete
+-- 30. Alter table cascade before delete
 ALTER TABLE public.transaction_detail DROP CONSTRAINT transaction_detail_id_product_fkey;
 ALTER TABLE public.transaction_detail ADD CONSTRAINT transaction_detail_id_product_fkey FOREIGN KEY (id_product) REFERENCES public.product(id_product) ON DELETE CASCADE;
 
 ALTER TABLE public.product_description DROP CONSTRAINT product_description_id_product_fkey;
 ALTER TABLE public.product_description ADD CONSTRAINT product_description_id_product_fkey FOREIGN KEY (id_product) REFERENCES public.product(id_product) ON DELETE CASCADE;
 
--- Delete product
+-- 31. Delete product
 delete from product where id_product = 1;
 delete from product where id_product_type = 1;
 
--- Union transaction
+-- 32. Union transaction
 select a.id_transaction, a.id_users, a.code, a.total_qty, a.total_amount from transaction a where a.id_users = 1
 union
 select b.id_transaction, b.id_users, b.code, b.total_qty, b.total_amount from transaction b where b.id_users = 2;
 
--- Show total price
+-- 33. Show total price
 select total_amount from transaction where id_users = 1;
 
--- Show total from table transaction detail
+-- 34. Show total from table transaction detail
 select sum(a.amount) as Total from transaction_detail a inner join product b on a.id_product = b.id_product where b.id_product_type = 2;
 
--- Show all table product and product type
+-- 35. Show all table product and product type
 select a.*, b.* from product a inner join product_type b on a.id_product_type = b.id_product_type;
 
--- Show all table transaction, product, users
+-- 36. Show all table transaction, product, users
 select *from transaction_detail a inner join transaction b on a.id_transaction = b.id_transaction inner join product c on c.id_product = a.id_product inner join users d on d.id = b.id_users;
 
--- Show all product not in transaction detail
+-- 37. Show all product not in transaction detail
 select *from product where id_product not IN(select id_product from transaction_detail);
 
--- Create Tridger and Function for updated_at
+-- 38. Create Tridger and Function for updated_at
 CREATE OR REPLACE FUNCTION product_update_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -256,9 +256,9 @@ BEFORE UPDATE ON product
 FOR EACH ROW
 EXECUTE FUNCTION product_update_updated_at();
 
--- Create view product and product_type
+-- 39. Create view product and product_type
 CREATE OR REPLACE VIEW public.product_with_type
 AS select a.*, b.name as type_name from product a inner join product_type b on a.id_product_type = b.id_product_type;
 
--- Show view product_with_type
+-- 40. Show view product_with_type
 select *from product_with_type;
