@@ -32,3 +32,121 @@ def check_number(n):
 if __name__ == '__main__':
     n = int(input().strip())
     check_number(n)
+
+soal no.3
+__________
+https://www.hackerrank.com/challenges/python-arithmetic-operators/problem?isFullScreen=true
+
+if __name__ == '__main__':
+    a = int(input())
+    b = int(input())
+
+    # Calculate the sum, difference, and product
+    sum_ab = a + b
+    diff_ab = a - b
+    product_ab = a * b
+
+    # Print the results
+    print(sum_ab)
+    print(diff_ab)
+    print(product_ab)
+
+Soal no.4
+__________
+if __name__ == '__main__':
+    a = int(input())
+    b = int(input())
+
+    # Calculate integer division and float division
+    int_div_result = a // b
+    float_div_result = a / b
+
+    # Print the results
+    print(int_div_result)
+    print(float_div_result)
+
+soal no.5
+__________
+https://www.hackerrank.com/challenges/python-loops/problem?isFullScreen=true
+
+if __name__ == '__main__':
+    n = int(input())
+
+    for i in range(n):
+        print(i ** 2)
+		
+soL NO.6
+__________
+https://www.hackerrank.com/challenges/python-print/problem?isFullScreen=true
+if __name__ == '__main__':
+    n = int(input())
+	
+Soal no.7
+__________
+https://www.hackerrank.com/challenges/list-comprehensions/problem?isFullScreen=true
+
+if __name__ == '__main__':
+    x = int(input())
+    y = int(input())
+    z = int(input())
+    n = int(input())
+	
+Soal no.8
+__________
+https://www.hackerrank.com/challenges/find-second-maximum-number-in-a-list/problem?isFullScreen=true
+
+if __name__ == '__main__':
+    n = int(input())
+    arr = map(int, input().split())
+	
+Soal no.9
+__________
+https://www.hackerrank.com/challenges/nested-list/problem?isFullScreen=true
+
+if __name__ == '__main__':
+    for _ in range(int(input())):
+        name = input()
+        score = float(input())
+		
+Soal no.10
+___________
+https://www.hackerrank.com/challenges/finding-the-percentage/problem?isFullScreen=true
+
+if __name__ == '__main__':
+    n = int(input())
+    student_marks = {}
+    for _ in range(n):
+        name, *line = input().split()
+        scores = list(map(float, line))
+        student_marks[name] = scores
+    query_name = input()
+	
+Soal no.11
+___________
+https://www.hackerrank.com/challenges/python-lists/problem?isFullScreen=true
+
+if __name__ == '__main__':
+    N = int(input())
+	
+Soal no.12
+___________
+https://www.hackerrank.com/challenges/python-tuples/problem?isFullScreen=true
+
+if __name__ == '__main__':
+    n = int(input())
+    integer_list = map(int, input().split())
+
+Soal no.13
+___________
+https://www.hackerrank.com/challenges/swap-case/problem?isFullScreen=true
+
+def swap_case(s):
+    # Using the swapcase method to transform the string
+    return s.swapcase()
+
+if __name__ == '__main__':
+    s = input()
+    result = swap_case(s)
+    print(result)
+	
+Custom Input : HackerRank.com presents "Pythonist 2".
